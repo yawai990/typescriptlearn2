@@ -1,13 +1,21 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import { ItemStructure } from './interface';
+import { useDispatch } from 'react-redux';
+import type { AppDispatch } from '../store';
+import {removefromcart,increaseQty,decreaseQty} from '../actions';
 
 interface Props {
   cart:boolean,
   showCart:React.Dispatch<React.SetStateAction<boolean>>,
   cartItems:ItemStructure[]
 }
+ 
 
 const Cart:React.FC<Props> = ({cart,showCart,cartItems}:Props) => {
+  const useAppDispatch: () => AppDispatch = useDispatch;
+  const dispatch = useAppDispatch();
+
+
   return (
     <div className='w-screen min-h-screen  bg-black/[0.5] flex justify-end items-start fixed top-0'
     >
@@ -24,7 +32,7 @@ const Cart:React.FC<Props> = ({cart,showCart,cartItems}:Props) => {
         
       <div>
        {
-        cartItems.length > 0 ? cartItems.map((cartItem,ind)=>(
+        cartItems.length > 0 ? cartItems?.map((cartItem,ind)=>(
           <div key={ind} className='w-full flex p-1'>
 
             <div className="image">
@@ -33,14 +41,27 @@ const Cart:React.FC<Props> = ({cart,showCart,cartItems}:Props) => {
 
             <div className='flex-1'>
 
-              <p className='font-semibold'>$ {cartItem.price}</p>
+              <p className='font-semibold'>
+                $ {(cartItem.price * cartItem.amount).toFixed(2)}
+                </p>
 
             <div className="m-auto btn-group flex justify-center items-center">
-                            <button className='border text-lg p-1 px-3 rounded-md hover:bg-red-500 hover:text-white'>-</button>
-                            <p className='flex-1 text-center'>0</p>
-                            <button className='border text-lg p-1 px-3 rounded-md hover:bg-green-500 hover:text-white'>+</button>
+                            <button 
+                            onClick={()=>dispatch(decreaseQty(cartItem.id))}
+                            className='border text-lg p-1 px-3 rounded-md hover:bg-red-500 hover:text-white' 
+                            disabled={cartItem.amount === 0 && true} >
+                              -</button>
+
+                            <p className='flex-1 text-center'>{cartItem.amount}</p>
+                            
+                            <button 
+                            onClick={()=>dispatch(increaseQty(cartItem.id))}
+                            className='border text-lg p-1 px-3 rounded-md hover:bg-green-500 hover:text-white'>
+                              +</button>
               </div>
-             <button className='py-1 text-white hover:bg-red-800 capitalize text-sm mt-2 w-full rounded-full bg-red-600 flex justify-center items-center'>remove item</button>
+             <button
+             onClick={()=>dispatch(removefromcart(cartItem.id))}             
+             className='py-1 text-white hover:bg-red-800 capitalize text-sm mt-2 w-full rounded-full bg-red-600 flex justify-center items-center'>remove item</button>
             </div>
           </div>
         )):<p className='font-semibold'>Your Cart is empty</p>

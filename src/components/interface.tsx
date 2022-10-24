@@ -6,6 +6,7 @@ export interface ItemStructure {
         image?:any,
         description?:String,
         category?:String,
+        amount?:Number | any,
         rating?:{
             rate: number;
             count: number;

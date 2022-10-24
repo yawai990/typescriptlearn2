@@ -4,4 +4,6 @@ import rootReducer from '../reducer';
 
 const store = createStore(rootReducer,compose(applyMiddleware(thunk)));
 
+export type AppDispatch = typeof store.dispatch
+
 export default store;

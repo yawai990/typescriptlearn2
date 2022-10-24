@@ -3,13 +3,14 @@ import { ItemStructure } from './interface';
 import ItemCard from './itemCard';
 
 interface Props {
-  items:ItemStructure[]
+  items:ItemStructure[],
+  cartItems:ItemStructure[],
 }
 
-const Main:React.FC<Props> = ({items}) => {
+const Main:React.FC<Props> = ({items,cartItems}) => {
   return (
     <div>
-      <ItemCard items={items} />
+      <ItemCard items={items} cartItems={cartItems} />
     </div>
   )
 }

@@ -12,7 +12,6 @@ interface RootState {
 
 const App:React.FC  = () => {
   const [cart,showCart] = useState<boolean>(false);
-  const dispatch = useDispatch();
   const {items,cartItems}= useSelector((state:RootState)=>state.items);
 
 
@@ -21,7 +20,7 @@ const App:React.FC  = () => {
 
       <div>
       <Navbar showCart={showCart} cartItems={cartItems} />
-      <Main items={items} />
+      <Main items={items} cartItems={cartItems} />
       </div>
     {
       cart && <Cart cart={cart} showCart={showCart} cartItems={cartItems} />
